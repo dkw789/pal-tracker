@@ -3,7 +3,7 @@ package io.pivotal.pal.tracker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
@@ -27,7 +27,7 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     @Override
-    public TimeEntry find(long timeEntryId) {
+    public TimeEntry find(Long timeEntryId) {
         return store.get(timeEntryId);
     }
 
@@ -37,7 +37,9 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     @Override
-    public TimeEntry update(long eq, TimeEntry timeEntry) {
+    public TimeEntry update(Long eq, TimeEntry timeEntry) {
+
+
         TimeEntry toUpdate = find(eq);
 
 
@@ -47,15 +49,15 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
           toUpdate.setProjectId(timeEntry.getProjectId());
           toUpdate.setUserId(timeEntry.getUserId());
 
-          store.put(timeEntry.getId(), toUpdate);
+            store.replace(eq, toUpdate);
           return toUpdate;
 
         } else {return null; }
     }
 
     @Override
-    public void delete(long timeEntryId) {
-        store.remove(timeEntryId);
+    public void delete(Long id) {
+        store.remove(id);
     }
 
 }
